@@ -8,9 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon --experimental-modules back-end/server.js",
     "client": "npm start --prefix front-end",
-    "dev": "concurrently \"npm run server\" \"npm run client\"  " ,
-    "data:import" : "node --experimental-modules back-end/seeder.js " ,
-    "data:destroy" : "node --experimental-modules back-end/seeder.js -d"
+    "dev": "concurrently \"npm run server\" \"npm run client\"  ",
+    "data:import": "node --experimental-modules back-end/seeder.js ",
+    "data:destroy": "node --experimental-modules back-end/seeder.js -d"
   },
   "author": "Ibrahim Shaaban",
   "license": "ISC",
@@ -18,6 +18,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
     "mongoose": "^5.10.9"
   },
   "devDependencies": {
