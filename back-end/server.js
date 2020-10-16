@@ -7,15 +7,21 @@ const ENVIROMENT = process.env.NODE_ENV;
 import connectDB from "./config/db.js";
 
 import productsRouter from "./routes/productRoutes.js";
+
+import userRoutes from "./routes/userRoutes.js";
+
 import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
 
 connectDB();
+
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
 app.use("/api/products", productsRouter);
+app.use("/api/users", userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

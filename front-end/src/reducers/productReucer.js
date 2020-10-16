@@ -7,7 +7,10 @@ import {
   PRODUCT_LIST_SUCCESS,
 } from "../constants/productConstants";
 
-export const productListReducer = (initialState = { products: [] }, action) => {
+export const productListReducer = (
+  initialState = { products: [], error: null },
+  action
+) => {
   const { type, payload } = action;
   switch (type) {
     case PRODUCT_LIST_REQUEST:
@@ -34,7 +37,7 @@ export const productDetailsReducer = (
       return { ...initialState, loading: true };
 
     case PRODUCT_DETAILS_SUCCESS:
-      return { ...initialState, loading: false, product: payload };
+      return { ...initialState, loading: false, product: payload, error: null };
 
     case PRODUCT_DETAILS_FAIL:
       return { ...initialState, loading: false, error: payload };
