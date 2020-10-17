@@ -26,6 +26,8 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
+
+    console.warn(errorMessage);
     // dispatch({
     //   type: PRODUCT_DETAILS_FAIL,
     //   payload: errorMessage,
