@@ -6,7 +6,12 @@ import {
   productDetailsReducer,
   productListReducer,
 } from "./reducers/productReucer";
-import { userLoginReducer, userRegisterReducer } from "./reducers/userReducer";
+import {
+  userDetailsReducer,
+  userLoginReducer,
+  userProfileUpdateReducer,
+  userRegisterReducer,
+} from "./reducers/userReducer";
 
 const initalState = {
   cart: {
@@ -26,6 +31,8 @@ const reducer = combineReducers({
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userDetails: userDetailsReducer,
+  userProfileUpdate: userProfileUpdateReducer,
 });
 const middlewares = [thunk];
 const store = createStore(
