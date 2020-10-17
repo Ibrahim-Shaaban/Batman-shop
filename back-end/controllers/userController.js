@@ -7,7 +7,7 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const foundUser = await User.findOne({ email });
-  if (foundUser && foundUser.matchPassword(password)) {
+  if (foundUser && (await foundUser.matchPassword(password))) {
     return res.json({
       id: foundUser._id,
       name: foundUser.name,
@@ -15,9 +15,10 @@ const authUser = asyncHandler(async (req, res) => {
       isAdmin: foundUser.isAdmin,
       token: generateToken(foundUser._id),
     });
+  } else {
+    res.status(401);
+    throw new Error("invalid email or password");
   }
-  res.status(401);
-  throw new Error("invalid email or password");
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -58,4 +59,23 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, getUserProfile, registerUser };
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const foundUser = await User.findById(req.user._id);
+  if (foundUser) {
+    foundUser.name = req.body.name || foundUser.name;
+    foundUser.email = req.body.email || foundUser.email;
+    foundUser.password = req.body.password || foundUser.password;
+
+    const updatedUser = await foundUser.save();
+    return res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  }
+  res.status(401);
+  throw new Error("User is not found");
+});
+
+export { authUser, getUserProfile, registerUser, updateUserProfile };
