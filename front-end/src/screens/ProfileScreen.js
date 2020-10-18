@@ -54,13 +54,17 @@ const ProfileScreen = ({ history }) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    dispatch(updateUserProfile({ name, email, password }));
-    if (userProfileUpdateState.success) {
-      setFormData({
-        ...formData,
-        name: userProfileUpdateState.updatedUserInfo.name,
-        email: userProfileUpdateState.updatedUserInfo.email,
-      });
+    if (password !== confirmedPassword) {
+      setMessage("passwords are not matched");
+    } else {
+      dispatch(updateUserProfile({ name, email, password }));
+      if (userProfileUpdateState.success) {
+        setFormData({
+          ...formData,
+          name: userProfileUpdateState.updatedUserInfo.name,
+          email: userProfileUpdateState.updatedUserInfo.email,
+        });
+      }
     }
   };
 
