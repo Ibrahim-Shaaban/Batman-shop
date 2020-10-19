@@ -5,6 +5,7 @@ import { cartReducer } from "./reducers/cartReducer";
 import {
   orderCreateReducer,
   orderDetailsReducer,
+  orderPayReducer,
 } from "./reducers/orderReduces";
 import {
   productDetailsReducer,
@@ -53,6 +54,7 @@ const reducer = combineReducers({
   userProfileUpdate: userProfileUpdateReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer,
 });
 const middlewares = [thunk];
 const store = createStore(
