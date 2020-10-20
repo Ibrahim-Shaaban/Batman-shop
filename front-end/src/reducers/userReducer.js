@@ -3,6 +3,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
   USER_DETAILS_SUCCESS,
+  USER_LIST_ADMIN_FAIL,
+  USER_LIST_ADMIN_REQUEST,
+  USER_LIST_ADMIN_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -133,6 +136,31 @@ export const userProfileUpdateReducer = (
         loading: false,
         error: payload,
         success: false,
+      };
+
+    default:
+      return initialState;
+  }
+};
+
+export const userListAdminReducer = (initialState = { users: [] }, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case USER_LIST_ADMIN_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case USER_LIST_ADMIN_SUCCESS:
+      return {
+        loading: false,
+        users: payload,
+      };
+
+    case USER_LIST_ADMIN_FAIL:
+      return {
+        loading: false,
+        error: payload,
       };
 
     default:

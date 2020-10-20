@@ -14,6 +14,7 @@ import {
 } from "./reducers/productReucer";
 import {
   userDetailsReducer,
+  userListAdminReducer,
   userLoginReducer,
   userProfileUpdateReducer,
   userRegisterReducer,
@@ -57,6 +58,7 @@ const reducer = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   orderListUser: orderListUserReducer,
+  userListAdmin: userListAdminReducer,
 });
 const middlewares = [thunk];
 const store = createStore(

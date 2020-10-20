@@ -3,6 +3,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
   USER_DETAILS_SUCCESS,
+  USER_LIST_ADMIN_FAIL,
+  USER_LIST_ADMIN_REQUEST,
+  USER_LIST_ADMIN_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -153,6 +156,34 @@ export const updateUserProfile = (updatedUser) => async (
         : error.message;
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
+      payload: errorMessage,
+    });
+  }
+};
+
+export const getUsers = () => async (dispatch, getState) => {
+  dispatch({ type: USER_LIST_ADMIN_REQUEST });
+
+  // make request
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    const response = await axios.get("/api/users/", config);
+    dispatch({
+      type: USER_LIST_ADMIN_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    const errorMessage =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: USER_LIST_ADMIN_FAIL,
       payload: errorMessage,
     });
   }
