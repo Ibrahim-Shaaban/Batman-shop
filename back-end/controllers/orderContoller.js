@@ -48,7 +48,7 @@ const getOrderById = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update order to paid
-// @route   GET /api/orders/:id/pay
+// @route   PUT /api/orders/:id/pay
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
@@ -72,4 +72,15 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   }
 });
 
-export { createOrder, getOrderById, updateOrderToPaid };
+// @desc    get logged in user orders
+// @route   GET /api/orders/user
+// @access  Private
+const getUserOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id });
+
+  if (orders) return res.json(orders);
+  res.status(404);
+  throw new Error("There are no orders for this user");
+});
+
+export { createOrder, getOrderById, updateOrderToPaid, getUserOrders };

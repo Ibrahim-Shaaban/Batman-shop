@@ -176,7 +176,7 @@ const OrderScreen = ({ match }) => {
                     <Loader />
                   ) : (
                     <PayPalButton
-                      amount={order.totalPrice || 500}
+                      amount={order.totalPrice}
                       onSuccess={successPaymentHandler}
                       onError={console.log}
                     />
