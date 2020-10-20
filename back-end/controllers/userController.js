@@ -79,4 +79,14 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   throw new Error("User is not found");
 });
 
-export { authUser, getUserProfile, registerUser, updateUserProfile };
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password");
+
+  if (users) {
+    return res.json(users);
+  }
+  res.status(404);
+  throw new Error("Thee are no users");
+});
+
+export { authUser, getUserProfile, registerUser, updateUserProfile, getUsers };
