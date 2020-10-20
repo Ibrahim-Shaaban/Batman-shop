@@ -114,6 +114,44 @@ const deleteUserById = asyncHandler(async (req, res) => {
   throw new Error("Can't delete this user");
 });
 
+// @desc    get user by admin
+// @route   GET /api/users/:id
+// @access  Private/Admin
+const getUserById = asyncHandler(async (req, res) => {
+  const foundUser = await User.findById({ _id: req.params.id }).select(
+    "-password"
+  );
+  if (foundUser) return res.json(foundUser);
+  res.status(404);
+  throw new Error("User is not found");
+});
+
+// @desc    update user by admin
+// @route   PUT /api/users/:id
+// @access  Private/Admin
+const updateUserById = asyncHandler(async (req, res) => {
+  const foundUser = await User.findById(req.params.id);
+  if (foundUser) {
+    foundUser.name = req.body.name || foundUser.name;
+    foundUser.email = req.body.email || foundUser.email;
+    foundUser.isAdmin = req.body.isAdmin || foundUser.isAdmin;
+
+    const updatedUser = await foundUser.save();
+    if (updatedUser) {
+      return res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      });
+    }
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
+  res.status(404);
+  throw new Error("User is not found");
+});
+
 export {
   authUser,
   getUserProfile,
@@ -121,4 +159,6 @@ export {
   updateUserProfile,
   getUsers,
   deleteUserById,
+  getUserById,
+  updateUserById,
 };
