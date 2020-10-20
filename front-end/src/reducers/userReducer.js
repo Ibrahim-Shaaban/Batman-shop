@@ -1,4 +1,7 @@
 import {
+  USER_DELETE_ADMIN_FAIL,
+  USER_DELETE_ADMIN_REQUEST,
+  USER_DELETE_ADMIN_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
@@ -147,7 +150,9 @@ export const userListAdminReducer = (initialState = { users: [] }, action) => {
   const { type, payload } = action;
   switch (type) {
     case USER_LIST_ADMIN_REQUEST:
+    case USER_DELETE_ADMIN_REQUEST:
       return {
+        ...initialState,
         loading: true,
       };
 
@@ -161,6 +166,19 @@ export const userListAdminReducer = (initialState = { users: [] }, action) => {
       return {
         loading: false,
         error: payload,
+      };
+
+    case USER_DELETE_ADMIN_SUCCESS:
+      return {
+        loading: false,
+        deleteError: null,
+        users: initialState.users.filter((user) => user._id !== payload),
+      };
+
+    case USER_DELETE_ADMIN_FAIL:
+      return {
+        loading: false,
+        deleteError: payload,
       };
 
     default:

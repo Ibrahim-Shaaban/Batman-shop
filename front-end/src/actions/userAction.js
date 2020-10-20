@@ -1,4 +1,7 @@
 import {
+  USER_DELETE_ADMIN_FAIL,
+  USER_DELETE_ADMIN_REQUEST,
+  USER_DELETE_ADMIN_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
@@ -184,6 +187,33 @@ export const getUsers = () => async (dispatch, getState) => {
         : error.message;
     dispatch({
       type: USER_LIST_ADMIN_FAIL,
+      payload: errorMessage,
+    });
+  }
+};
+
+export const deleteUser = (userID) => async (dispatch, getState) => {
+  dispatch({ type: USER_DELETE_ADMIN_REQUEST });
+
+  // make request
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/users/${userID}`, config);
+    dispatch({ type: USER_DELETE_ADMIN_SUCCESS, payload: userID });
+  } catch (error) {
+    const errorMessage =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    console.log(errorMessage);
+    dispatch({
+      type: USER_DELETE_ADMIN_FAIL,
       payload: errorMessage,
     });
   }
