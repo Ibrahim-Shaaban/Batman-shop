@@ -1,6 +1,7 @@
 import express from "express";
 import {
   authUser,
+  deleteUserById,
   getUserProfile,
   getUsers,
   registerUser,
@@ -12,7 +13,6 @@ const router = express.Router();
 
 router.route("/login").post(authUser);
 
-// private routes
 router
   .route("/profile")
   .get(protect, getUserProfile)
@@ -20,5 +20,6 @@ router
 
 router.route("/register").post(registerUser);
 router.route("/").get(protect, isAdmin, getUsers);
+router.route("/:id").delete(protect, isAdmin, deleteUserById);
 
 export default router;

@@ -3,6 +3,9 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 
+// @desc    login user
+// @route   POST /api/user/login
+// @access  Public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -21,6 +24,9 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    get user profile
+// @route   GET /api/users/profile
+// @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
   const foundUser = await User.findById(req.user._id);
 
@@ -36,6 +42,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
   throw new Error("User is not found");
 });
 
+// @desc    add new user
+// @route   POST /api/users/register
+// @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   const { email, password, name } = req.body;
 
@@ -60,6 +69,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    update logged in user profile
+// @route   PUT /api/users
+// @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const foundUser = await User.findById(req.user._id);
   if (foundUser) {
@@ -79,6 +91,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   throw new Error("User is not found");
 });
 
+// @desc    get users for admin
+// @route   GET /api/users
+// @access  Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find().select("-password");
 
@@ -89,4 +104,21 @@ const getUsers = asyncHandler(async (req, res) => {
   throw new Error("Thee are no users");
 });
 
-export { authUser, getUserProfile, registerUser, updateUserProfile, getUsers };
+// @desc    delete user by admin
+// @route   DELETE /api/users/:id
+// @access  Private/Admin
+const deleteUserById = asyncHandler(async (req, res) => {
+  const deletedUSer = await User.findByIdAndDelete({ _id: req.params.id });
+  if (deletedUSer) return res.json({ message: "user is deleted successfully" });
+  res.status(400);
+  throw new Error("Can't delete this user");
+});
+
+export {
+  authUser,
+  getUserProfile,
+  registerUser,
+  updateUserProfile,
+  getUsers,
+  deleteUserById,
+};
