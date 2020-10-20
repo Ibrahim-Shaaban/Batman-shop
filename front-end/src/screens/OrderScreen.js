@@ -43,10 +43,6 @@ const OrderScreen = ({ match }) => {
     dispatch(payOrder(match.params.id, paymentResult));
   };
 
-  const errorPaymentHandler = (error) => {
-    console.log(error);
-  };
-
   useEffect(() => {
     if (!order || successPay) {
       dispatch(resetPayment());
@@ -58,7 +54,7 @@ const OrderScreen = ({ match }) => {
         setPaypalSdkReady(true);
       }
     }
-  }, [match.params.id, dispatch, order]);
+  }, [match.params.id, dispatch, order, successPay]);
   return loading ? (
     <Loader />
   ) : error ? (
@@ -114,7 +110,7 @@ const OrderScreen = ({ match }) => {
                   {order.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
-                        <Col md={1}>
+                        <Col md={2}>
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -178,7 +174,6 @@ const OrderScreen = ({ match }) => {
                     <PayPalButton
                       amount={order.totalPrice}
                       onSuccess={successPaymentHandler}
-                      onError={console.log}
                     />
                   )}
                 </ListGroup.Item>

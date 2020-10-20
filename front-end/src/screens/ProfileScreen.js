@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Form, Button } from "react-bootstrap";
+import { Col, Row, Form, Button, Table } from "react-bootstrap";
 import Message from "../componenets/Message";
 import Loader from "../componenets/Loader";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile, updateUserProfile } from "../actions/userAction";
+import { getUserOrders } from "../actions/orderAction";
+import { LinkContainer } from "react-router-bootstrap";
 
 const ProfileScreen = ({ history }) => {
   const [message, setMessage] = useState(null); // passowrd confirmation message
@@ -18,20 +20,28 @@ const ProfileScreen = ({ history }) => {
 
   const { userInfo } = useSelector((state) => state.userLogin);
   const { user, loading, error } = useSelector((state) => state.userDetails);
+
   const userProfileUpdateState = useSelector(
     (state) => state.userProfileUpdate
   );
 
+  const orderListUser = useSelector((state) => state.orderListUser);
+  const {
+    orders,
+    loading: loadingOrderList,
+    error: errorOrderList,
+  } = orderListUser;
   useEffect(() => {
     // check if user is logged in
     if (!userInfo) {
       // if no push him to login page
       history.push("/");
     } else {
-      if (!user) {
+      if (!user && !loading) {
         // check if request to get profile is done
         dispatch(getUserProfile("profile"));
-      } else {
+        dispatch(getUserOrders());
+      } else if (user) {
         setFormData({
           ...formData,
           name: user.name,
@@ -41,7 +51,7 @@ const ProfileScreen = ({ history }) => {
     }
 
     // if yes get user profile
-  }, [dispatch, history, userInfo, user]);
+  }, [dispatch, history, userInfo, user, loading]);
 
   const handleChange = (event) => {
     setFormData({
@@ -131,7 +141,57 @@ const ProfileScreen = ({ history }) => {
           </Button>
         </Form>
       </Col>
-      <Col md={9}></Col>
+      <Col md={9}>
+        <h2>My Orders</h2>
+        {loadingOrderList ? (
+          <Loader />
+        ) : errorOrderList ? (
+          <Message variant="danger">{errorOrderList}</Message>
+        ) : (
+          <Table striped bordered responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>DELIVERED</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice}</td>
+                  <td>
+                    {order.isPaid ? (
+                      order.paidAt.substring(0, 10)
+                    ) : (
+                      <i className="fas fa-times" style={{ color: "red" }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {order.isDelivered ? (
+                      order.deliveredAt.substring(0, 10)
+                    ) : (
+                      <i className="fas fa-times" style={{ color: "red" }}></i>
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/order/${order._id}`}>
+                      <Button className="btn-sm" variant="light">
+                        Details
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </Col>
     </Row>
   );
 };

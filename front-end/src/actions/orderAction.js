@@ -7,6 +7,9 @@ import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
+  ORDER_LIST_USER_FAIL,
+  ORDER_LIST_USER_REQUEST,
+  ORDER_LIST_USER_SUCCESS,
   ORDER_PAY_RESET,
 } from "../constants/orderConstants";
 
@@ -108,4 +111,33 @@ export const resetPayment = () => (dispatch) => {
   dispatch({
     type: ORDER_PAY_RESET,
   });
+};
+
+export const getUserOrders = () => async (dispatch, getState) => {
+  dispatch({ type: ORDER_LIST_USER_REQUEST });
+  // make request
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    const response = await axios.get(`/api/orders/user`, config);
+
+    dispatch({
+      type: ORDER_LIST_USER_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    const errorMessage =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: ORDER_LIST_USER_FAIL,
+      payload: errorMessage,
+    });
+  }
 };
