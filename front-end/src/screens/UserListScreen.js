@@ -24,7 +24,9 @@ const UserListScreen = ({ history }) => {
 
   const deleteHandler = (userId) => {
     // dispatch delete user
-    dispatch(deleteUser(userId));
+    if (window.confirm("Are you sure yo wanna delete this user ? ")) {
+      dispatch(deleteUser(userId));
+    }
   };
   return (
     <Fragment>
