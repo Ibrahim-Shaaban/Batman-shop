@@ -5,6 +5,9 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  PRODUCT_DELETE_ADMIN_REQUEST,
+  PRODUCT_DELETE_ADMIN_SUCCESS,
+  PRODUCT_DELETE_ADMIN_FAIL,
 } from "../constants/productConstants";
 import axios from "axios";
 
@@ -39,6 +42,32 @@ export const fetchProduct = (id) => async (dispatch) => {
         : error.message;
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
+      payload: errorMessage,
+    });
+  }
+};
+
+export const deleteProduct = (productId) => async (dispatch, getState) => {
+  dispatch({ type: PRODUCT_DELETE_ADMIN_REQUEST });
+
+  // make request
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/products/${productId}`, config);
+    dispatch({ type: PRODUCT_DELETE_ADMIN_SUCCESS });
+  } catch (error) {
+    const errorMessage =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({
+      type: PRODUCT_DELETE_ADMIN_FAIL,
       payload: errorMessage,
     });
   }

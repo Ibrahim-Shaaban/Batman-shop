@@ -1,4 +1,7 @@
 import {
+  PRODUCT_DELETE_ADMIN_FAIL,
+  PRODUCT_DELETE_ADMIN_REQUEST,
+  PRODUCT_DELETE_ADMIN_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
@@ -41,6 +44,26 @@ export const productDetailsReducer = (
 
     case PRODUCT_DETAILS_FAIL:
       return { ...initialState, loading: false, error: payload };
+
+    default:
+      return { ...initialState };
+  }
+};
+
+export const productDeleteReducer = (
+  initialState = { product: { reviews: [] } },
+  action
+) => {
+  const { type, payload } = action;
+  switch (type) {
+    case PRODUCT_DELETE_ADMIN_REQUEST:
+      return { loading: true };
+
+    case PRODUCT_DELETE_ADMIN_SUCCESS:
+      return { loading: false, success: true };
+
+    case PRODUCT_DELETE_ADMIN_FAIL:
+      return { loading: false, error: payload };
 
     default:
       return { ...initialState };
