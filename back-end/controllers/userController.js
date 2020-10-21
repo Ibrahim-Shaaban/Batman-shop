@@ -134,7 +134,7 @@ const updateUserById = asyncHandler(async (req, res) => {
   if (foundUser) {
     foundUser.name = req.body.name || foundUser.name;
     foundUser.email = req.body.email || foundUser.email;
-    foundUser.isAdmin = req.body.isAdmin || foundUser.isAdmin;
+    foundUser.isAdmin = req.body.isAdmin;
 
     const updatedUser = await foundUser.save();
     if (updatedUser) {

@@ -51,6 +51,7 @@ const ProfileScreen = ({ history }) => {
     }
 
     // if yes get user profile
+    // eslint-disable-next-line
   }, [dispatch, history, userInfo, user, loading]);
 
   const handleChange = (event) => {

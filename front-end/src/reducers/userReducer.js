@@ -1,4 +1,5 @@
 import {
+  CLEAR_USER_UPDATE_SUCCESS,
   USER_DELETE_ADMIN_FAIL,
   USER_DELETE_ADMIN_REQUEST,
   USER_DELETE_ADMIN_SUCCESS,
@@ -16,6 +17,10 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_UPDATE_ADMIN_FAIL,
+  USER_UPDATE_ADMIN_REQUEST,
+  USER_UPDATE_ADMIN_RESET,
+  USER_UPDATE_ADMIN_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
@@ -84,12 +89,22 @@ export const userRegisterReducer = (
   }
 };
 
-export const userDetailsReducer = (initialState = { user: null }, action) => {
+export const userDetailsReducer = (
+  initialState = { user: null, successUpdate: false },
+  action
+) => {
   const { type, payload } = action;
   switch (type) {
     case USER_DETAILS_REQUEST:
       return {
         loading: true,
+        successUpdate: false,
+      };
+
+    case USER_UPDATE_ADMIN_REQUEST:
+      return {
+        loadingUpdate: true,
+        user: initialState.user,
       };
 
     case USER_DETAILS_SUCCESS:
@@ -99,15 +114,35 @@ export const userDetailsReducer = (initialState = { user: null }, action) => {
         error: null,
       };
 
+    case USER_UPDATE_ADMIN_SUCCESS:
+      return {
+        loadingUpdate: false,
+        user: payload,
+        errorUpdate: null,
+        successUpdate: true,
+      };
+
     case USER_DETAILS_FAIL:
       return {
         loading: false,
         error: payload,
       };
 
+    case USER_UPDATE_ADMIN_FAIL:
+      return {
+        loadingUpdate: false,
+        errorUpdate: payload,
+      };
+
     case USER_DETAILS_RESET:
+    case USER_UPDATE_ADMIN_RESET:
       return {
         user: null,
+      };
+
+    case CLEAR_USER_UPDATE_SUCCESS:
+      return {
+        successUpdate: false,
       };
 
     default:

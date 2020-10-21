@@ -18,6 +18,7 @@ const UserListScreen = ({ history }) => {
       history.push("/login");
     } else {
       dispatch(getUsers());
+      // dispatch({type : })
     }
   }, [dispatch, history, userInfo]);
 
