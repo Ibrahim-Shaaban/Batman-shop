@@ -83,4 +83,21 @@ const getUserOrders = asyncHandler(async (req, res) => {
   throw new Error("There are no orders for this user");
 });
 
-export { createOrder, getOrderById, updateOrderToPaid, getUserOrders };
+// @desc    get all orders for admin
+// @route   GET /api/orders
+// @access  Private/Admin
+const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find();
+
+  if (orders) return res.json(orders);
+  res.status(404);
+  throw new Error("There are no orders");
+});
+
+export {
+  createOrder,
+  getOrderById,
+  updateOrderToPaid,
+  getUserOrders,
+  getAllOrders,
+};

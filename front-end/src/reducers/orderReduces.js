@@ -5,6 +5,9 @@ import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
+  ORDER_LIST_ADMIN_FAIL,
+  ORDER_LIST_ADMIN_REQUEST,
+  ORDER_LIST_ADMIN_SUCCESS,
   ORDER_LIST_USER_FAIL,
   ORDER_LIST_USER_REQUEST,
   ORDER_LIST_USER_RESET,
@@ -121,6 +124,39 @@ export const orderListUserReducer = (initialState = { orders: [] }, action) => {
       return {
         orders: [],
       };
+
+    default:
+      return initialState;
+  }
+};
+
+export const orderListAdminReducer = (
+  initialState = { orders: [] },
+  action
+) => {
+  const { type, payload } = action;
+  switch (type) {
+    case ORDER_LIST_ADMIN_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ORDER_LIST_ADMIN_SUCCESS:
+      return {
+        loading: false,
+        orders: payload,
+      };
+
+    case ORDER_LIST_ADMIN_FAIL:
+      return {
+        loading: false,
+        error: payload,
+      };
+
+    // case ORDER_LIST_ADMIN_RESET:
+    //   return {
+    //     orders: [],
+    //   };
 
     default:
       return initialState;

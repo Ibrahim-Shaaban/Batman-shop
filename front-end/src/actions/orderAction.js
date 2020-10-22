@@ -7,6 +7,9 @@ import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
+  ORDER_LIST_ADMIN_FAIL,
+  ORDER_LIST_ADMIN_REQUEST,
+  ORDER_LIST_ADMIN_SUCCESS,
   ORDER_LIST_USER_FAIL,
   ORDER_LIST_USER_REQUEST,
   ORDER_LIST_USER_SUCCESS,
@@ -137,6 +140,35 @@ export const getUserOrders = () => async (dispatch, getState) => {
         : error.message;
     dispatch({
       type: ORDER_LIST_USER_FAIL,
+      payload: errorMessage,
+    });
+  }
+};
+
+export const getAllOrders = () => async (dispatch, getState) => {
+  dispatch({ type: ORDER_LIST_ADMIN_REQUEST });
+  // make request
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    const response = await axios.get("/api/orders", config);
+
+    dispatch({
+      type: ORDER_LIST_ADMIN_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    const errorMessage =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: ORDER_LIST_ADMIN_FAIL,
       payload: errorMessage,
     });
   }
