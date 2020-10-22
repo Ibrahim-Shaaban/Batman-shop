@@ -92,6 +92,7 @@ const UserEditScreen = ({ match, history }) => {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="name"
+                name="name"
                 placeholder="Enter name"
                 value={name}
                 onChange={handleChange}
@@ -102,6 +103,7 @@ const UserEditScreen = ({ match, history }) => {
               <Form.Label>Email Address</Form.Label>
               <Form.Control
                 type="email"
+                name="email"
                 placeholder="Enter email"
                 value={email}
                 onChange={handleChange}

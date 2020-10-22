@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import { listProducts } from "../actions/productAction";
+import { listProducts, resetFetchProduct } from "../actions/productAction";
 
 import Product from "../componenets/Product";
 import Loader from "../componenets/Loader";
@@ -15,6 +15,7 @@ const HomeScreen = () => {
   const { loading, error, products } = state;
 
   useEffect(() => {
+    // dispatch(resetFetchProduct());
     dispatch(listProducts());
   }, [dispatch]);
 
