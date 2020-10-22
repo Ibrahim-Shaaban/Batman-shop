@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import Loader from "../componenets/Loader";
 import Message from "../componenets/Message";
@@ -36,6 +37,8 @@ const ProductEditScreen = ({ match, history }) => {
     category: "",
     description: "",
   });
+
+  const [uploading, setUploading] = useState(false);
 
   const matchProductId = match.params.id;
 
@@ -84,7 +87,34 @@ const ProductEditScreen = ({ match, history }) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+
     dispatch(updateProduct(formData, matchProductId));
+  };
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const fileFormData = new FormData();
+    fileFormData.append("image", file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const { data } = await axios.post("/api/upload", fileFormData, config);
+
+      setFormData({
+        ...formData,
+        image: data,
+      });
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
   };
 
   const {
@@ -142,13 +172,13 @@ const ProductEditScreen = ({ match, history }) => {
                 value={image}
                 onChange={handleChange}
               ></Form.Control>
-              {/* <Form.File
+              <Form.File
                 id="image-file"
                 label="Choose File"
                 custom
                 onChange={uploadFileHandler}
               ></Form.File>
-              {uploading && <Loader />} */}
+              {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group controlId="brand">
