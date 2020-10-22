@@ -4,6 +4,10 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
+  ORDER_DELIVER_FAIL,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_RESET,
+  ORDER_DELIVER_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
@@ -13,6 +17,7 @@ import {
   ORDER_LIST_USER_FAIL,
   ORDER_LIST_USER_REQUEST,
   ORDER_LIST_USER_SUCCESS,
+  ORDER_PAY_REQUEST,
   ORDER_PAY_RESET,
 } from "../constants/orderConstants";
 
@@ -78,7 +83,7 @@ export const payOrder = (orderId, paymentResult) => async (
   dispatch,
   getState
 ) => {
-  dispatch({ type: ORDER_DETAILS_REQUEST });
+  dispatch({ type: ORDER_PAY_REQUEST });
   // make request
 
   try {
@@ -172,4 +177,43 @@ export const getAllOrders = () => async (dispatch, getState) => {
       payload: errorMessage,
     });
   }
+};
+
+export const deliverOrder = (orderId) => async (dispatch, getState) => {
+  dispatch({ type: ORDER_DELIVER_REQUEST });
+  // make request
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    const response = await axios.put(
+      `/api/orders/${orderId}/deliver`,
+      {},
+      config
+    );
+
+    dispatch({
+      type: ORDER_DELIVER_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    const errorMessage =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: ORDER_DELIVER_FAIL,
+      payload: errorMessage,
+    });
+  }
+};
+
+export const resetOrderDeliver = () => (dispatch) => {
+  dispatch({
+    type: ORDER_DELIVER_RESET,
+  });
 };

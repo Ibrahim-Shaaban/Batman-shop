@@ -1,20 +1,31 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrderById, payOrder, resetPayment } from "../actions/orderAction";
+import {
+  deliverOrder,
+  getOrderById,
+  payOrder,
+  resetOrderDeliver,
+  resetPayment,
+} from "../actions/orderAction";
 import { Link } from "react-router-dom";
 import Message from "../componenets/Message";
 import Loader from "../componenets/Loader";
 import axios from "axios";
 import { PayPalButton } from "react-paypal-button-v2";
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
   const [paypalSdkReady, setPaypalSdkReady] = useState(false);
   const dispatch = useDispatch();
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
   const orderPay = useSelector((state) => state.orderPay);
   const { success: successPay, loading: loadingPay } = orderPay;
+
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { success: successDeliver, loading: loadingDeliver } = orderDeliver;
+
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -38,15 +49,25 @@ const OrderScreen = ({ match }) => {
     };
   };
 
+  const matchOrderId = match.params.id;
+
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
-    dispatch(payOrder(match.params.id, paymentResult));
+    dispatch(payOrder(matchOrderId, paymentResult));
+  };
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(matchOrderId));
   };
 
   useEffect(() => {
-    if (!order || successPay) {
+    if (!userInfo) {
+      history.push("/login");
+    }
+    if (!order || successPay || successDeliver) {
       dispatch(resetPayment());
-      dispatch(getOrderById(match.params.id));
+      dispatch(resetOrderDeliver());
+      dispatch(getOrderById(matchOrderId));
     } else if (!order.isPaid) {
       if (!window.paypal) {
         addPaypalScript();
@@ -54,7 +75,15 @@ const OrderScreen = ({ match }) => {
         setPaypalSdkReady(true);
       }
     }
-  }, [match.params.id, dispatch, order, successPay]);
+  }, [
+    history,
+    matchOrderId,
+    dispatch,
+    order,
+    successPay,
+    successDeliver,
+    userInfo,
+  ]);
   return loading ? (
     <Loader />
   ) : error ? (
@@ -178,8 +207,8 @@ const OrderScreen = ({ match }) => {
                   )}
                 </ListGroup.Item>
               )}
-              {/* {loadingDeliver && <Loader />} */}
-              {/* {userInfo &&
+              {loadingDeliver && <Loader />}
+              {userInfo &&
                 userInfo.isAdmin &&
                 order.isPaid &&
                 !order.isDelivered && (
@@ -192,7 +221,7 @@ const OrderScreen = ({ match }) => {
                       Mark As Delivered
                     </Button>
                   </ListGroup.Item>
-                )} */}
+                )}
             </ListGroup>
           </Card>
         </Col>

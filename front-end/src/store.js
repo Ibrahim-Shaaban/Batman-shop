@@ -4,11 +4,12 @@ import thunk from "redux-thunk";
 import { cartReducer } from "./reducers/cartReducer";
 import {
   orderCreateReducer,
+  orderDeliverReducer,
   orderDetailsReducer,
   orderListAdminReducer,
   orderListUserReducer,
   orderPayReducer,
-} from "./reducers/orderReduces";
+} from "./reducers/orderReducer";
 import {
   productCreateReducer,
   productDeleteReducer,
@@ -67,6 +68,7 @@ const reducer = combineReducers({
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
   orderListAdmin: orderListAdminReducer,
+  orderDeliver: orderDeliverReducer,
 });
 const middlewares = [thunk];
 const store = createStore(
