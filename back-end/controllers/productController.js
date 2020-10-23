@@ -6,14 +6,23 @@ import Product from "../models/productModel.js";
 // @route   GET /api/products?keyword=
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
+  const pageSize = 2;
+  const currentPage = Number(req.query.pageNumber) || 1;
   const keyword = req.query.keyword;
   const searchOptions = keyword.length
     ? {
         name: { $regex: keyword, $options: "i" },
       }
     : {};
-  const products = await Product.find({ ...searchOptions });
-  return res.json(products);
+  const productsCount = await Product.countDocuments({ ...searchOptions });
+  const products = await Product.find({ ...searchOptions })
+    .limit(pageSize)
+    .skip(pageSize * (currentPage - 1));
+  return res.json({
+    products,
+    currentPage,
+    pages: Math.ceil(productsCount / pageSize),
+  });
 });
 
 // @desc    get specific product by id
