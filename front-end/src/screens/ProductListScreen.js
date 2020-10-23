@@ -10,10 +10,12 @@ import {
 } from "../actions/productAction";
 import Message from "../componenets/Message";
 import Loader from "../componenets/Loader";
+import Paginate from "../componenets/Paginate";
 
-const ProductListScreen = ({ history }) => {
+const ProductListScreen = ({ history, match }) => {
+  const { pageNumber } = match.params;
   const { userInfo } = useSelector((state) => state.userLogin);
-  const { products, loading, error } = useSelector(
+  const { products, loading, error, pages, currentPage } = useSelector(
     (state) => state.productList
   );
 
@@ -37,10 +39,10 @@ const ProductListScreen = ({ history }) => {
         history.push(`/admin/product/${product._id}/edit`);
         dispatch(resetCreateProduct());
       } else {
-        dispatch(listProducts());
+        dispatch(listProducts("", pageNumber || 1));
       }
     }
-  }, [history, dispatch, userInfo, success, successCreate]);
+  }, [history, dispatch, userInfo, success, successCreate, pageNumber]);
 
   const deleteHandler = (productId) => {
     if (window.confirm("Are you sure you wanna delete this product ?")) {
@@ -110,7 +112,7 @@ const ProductListScreen = ({ history }) => {
               ))}
             </tbody>
           </Table>
-          {/* <Paginate pages={pages} page={page} isAdmin={true} /> */}
+          <Paginate pages={pages} currentPage={currentPage} isAdmin={true} />
         </>
       )}
     </Fragment>

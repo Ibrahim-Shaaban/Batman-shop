@@ -33,10 +33,20 @@ export const productListReducer = (
       return { ...initialState, loading: true };
 
     case PRODUCT_LIST_SUCCESS:
-      return { ...initialState, loading: false, products: payload };
+      return {
+        // ...initialState,
+        loading: false,
+        products: payload.products,
+        currentPage: payload.currentPage,
+        pages: payload.pages,
+      };
 
     case PRODUCT_LIST_FAIL:
-      return { ...initialState, loading: false, error: payload };
+      return {
+        // ...initialState,
+        loading: false,
+        error: payload,
+      };
 
     default:
       return { ...initialState };
