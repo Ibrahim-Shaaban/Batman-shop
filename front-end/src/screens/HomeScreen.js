@@ -7,17 +7,19 @@ import Product from "../componenets/Product";
 import Loader from "../componenets/Loader";
 import Message from "../componenets/Message";
 
-const HomeScreen = () => {
+const HomeScreen = ({ match }) => {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state.productList);
 
   const { loading, error, products } = state;
 
+  const { keyword } = match.params;
+
   useEffect(() => {
     dispatch(resetFetchProduct());
-    dispatch(listProducts());
-  }, [dispatch]);
+    dispatch(listProducts(keyword));
+  }, [dispatch, keyword]);
 
   return (
     <Fragment>
