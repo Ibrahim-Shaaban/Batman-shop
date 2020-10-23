@@ -3,6 +3,10 @@ import {
   PRODUCT_CREATE_ADMIN_REQUEST,
   PRODUCT_CREATE_ADMIN_RESET,
   PRODUCT_CREATE_ADMIN_SUCCESS,
+  PRODUCT_CREATE_REVIEW_FAIL,
+  PRODUCT_CREATE_REVIEW_REQUEST,
+  PRODUCT_CREATE_REVIEW_RESET,
+  PRODUCT_CREATE_REVIEW_SUCCESS,
   PRODUCT_DELETE_ADMIN_FAIL,
   PRODUCT_DELETE_ADMIN_REQUEST,
   PRODUCT_DELETE_ADMIN_SUCCESS,
@@ -40,7 +44,7 @@ export const productListReducer = (
 };
 
 export const productDetailsReducer = (
-  initialState = { product: { reviews: [] } },
+  initialState = { product: null },
   action
 ) => {
   const { type, payload } = action;
@@ -125,5 +129,25 @@ export const productUpdateReducer = (
 
     default:
       return { ...initialState };
+  }
+};
+
+export const productCreateReviewReducer = (initialState = {}, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case PRODUCT_CREATE_REVIEW_REQUEST:
+      return { loading: true };
+
+    case PRODUCT_CREATE_REVIEW_SUCCESS:
+      return { loading: false, success: true };
+
+    case PRODUCT_CREATE_REVIEW_FAIL:
+      return { loading: false, error: payload };
+
+    case PRODUCT_CREATE_REVIEW_RESET:
+      return {};
+
+    default:
+      return initialState;
   }
 };

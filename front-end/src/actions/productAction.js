@@ -17,6 +17,10 @@ import {
   PRODUCT_UPDATE_ADMIN_FAIL,
   PRODUCT_UPDATE_ADMIN_RESET,
   PRODUCT_DETAILS_RESET,
+  PRODUCT_CREATE_REVIEW_RESET,
+  PRODUCT_CREATE_REVIEW_FAIL,
+  PRODUCT_CREATE_REVIEW_REQUEST,
+  PRODUCT_CREATE_REVIEW_SUCCESS,
 } from "../constants/productConstants";
 import axios from "axios";
 
@@ -54,6 +58,10 @@ export const fetchProduct = (id) => async (dispatch) => {
       payload: errorMessage,
     });
   }
+};
+
+export const resetFetchProduct = () => (dispatch) => {
+  dispatch({ type: PRODUCT_DETAILS_RESET });
 };
 
 export const deleteProduct = (productId) => async (dispatch, getState) => {
@@ -150,6 +158,36 @@ export const resetUpdateProduct = () => (dispatch) => {
   dispatch({ type: PRODUCT_UPDATE_ADMIN_RESET });
 };
 
-export const resetFetchProduct = () => (dispatch) => {
-  dispatch({ type: PRODUCT_DETAILS_RESET });
+export const createProductReview = (review, productId) => async (
+  dispatch,
+  getState
+) => {
+  dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
+
+  // make request
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    await axios.post(`/api/products/${productId}/reviews`, review, config);
+    dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS });
+  } catch (error) {
+    const errorMessage =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_FAIL,
+      payload: errorMessage,
+    });
+  }
+};
+
+export const resetProductReviewCreate = () => (dispatch) => {
+  dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
 };

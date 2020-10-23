@@ -12,6 +12,7 @@ import {
 } from "./reducers/orderReducer";
 import {
   productCreateReducer,
+  productCreateReviewReducer,
   productDeleteReducer,
   productDetailsReducer,
   productListReducer,
@@ -69,6 +70,7 @@ const reducer = combineReducers({
   productUpdate: productUpdateReducer,
   orderListAdmin: orderListAdminReducer,
   orderDeliver: orderDeliverReducer,
+  productCreateReview: productCreateReviewReducer,
 });
 const middlewares = [thunk];
 const store = createStore(
