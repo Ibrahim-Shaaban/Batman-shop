@@ -8,6 +8,7 @@ import Loader from "../componenets/Loader";
 import Message from "../componenets/Message";
 import Paginate from "../componenets/Paginate";
 import ProductCarousel from "../componenets/ProductCarousel ";
+import { Link } from "react-router-dom";
 const HomeScreen = ({ match }) => {
   const dispatch = useDispatch();
 
@@ -24,7 +25,13 @@ const HomeScreen = ({ match }) => {
 
   return (
     <Fragment>
-      {!keyword && <ProductCarousel />}
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to="/" className="btn btn-light">
+          Go Back
+        </Link>
+      )}
       <h2>latest products</h2>
       {loading ? (
         <Loader />
