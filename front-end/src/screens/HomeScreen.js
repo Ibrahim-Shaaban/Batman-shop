@@ -7,7 +7,7 @@ import Product from "../componenets/Product";
 import Loader from "../componenets/Loader";
 import Message from "../componenets/Message";
 import Paginate from "../componenets/Paginate";
-
+import ProductCarousel from "../componenets/ProductCarousel ";
 const HomeScreen = ({ match }) => {
   const dispatch = useDispatch();
 
@@ -24,6 +24,8 @@ const HomeScreen = ({ match }) => {
 
   return (
     <Fragment>
+      {!keyword && <ProductCarousel />}
+      <h2>latest products</h2>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -31,9 +33,9 @@ const HomeScreen = ({ match }) => {
       ) : (
         <Fragment>
           <Row>
-            <Col md={12}>
-              <h2>latest products</h2>
-            </Col>
+            {/* <Col md={12}>
+              
+            </Col> */}
             {products.map((product) => (
               <Col key={product._id} md={6} lg={4} xl={3} xs={12}>
                 <Product product={product} />

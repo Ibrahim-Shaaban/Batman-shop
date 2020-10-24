@@ -6,7 +6,7 @@ import Product from "../models/productModel.js";
 // @route   GET /api/products?keyword=&pageNumber=
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 3;
+  const pageSize = 4;
   const currentPage = Number(req.query.pageNumber) || 1;
   const keyword = req.query.keyword;
   const searchOptions = keyword.length
@@ -29,7 +29,7 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route   GET /api/products/top
 // @access  Public
 const getTopRatedProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find().sort({ rating: -1 }).limit(4);
+  const products = await Product.find().sort({ rating: -1 }).limit(3);
   return res.json(products);
 });
 

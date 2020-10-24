@@ -17,6 +17,7 @@ import {
   productDetailsReducer,
   productListReducer,
   productUpdateReducer,
+  topRatedProductsReducer,
 } from "./reducers/productReucer";
 import {
   userDetailsReducer,
@@ -54,6 +55,7 @@ const initalState = {
 };
 const reducer = combineReducers({
   productList: productListReducer,
+  topRatedProducts: topRatedProductsReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,

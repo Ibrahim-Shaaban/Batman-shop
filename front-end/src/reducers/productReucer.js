@@ -21,6 +21,9 @@ import {
   PRODUCT_UPDATE_ADMIN_REQUEST,
   PRODUCT_UPDATE_ADMIN_RESET,
   PRODUCT_UPDATE_ADMIN_SUCCESS,
+  TOP_RATED_PRODUCTS_FAIL,
+  TOP_RATED_PRODUCTS_REQUEST,
+  TOP_RATED_PRODUCTS_SUCCESS,
 } from "../constants/productConstants";
 
 export const productListReducer = (
@@ -159,5 +162,31 @@ export const productCreateReviewReducer = (initialState = {}, action) => {
 
     default:
       return initialState;
+  }
+};
+
+export const topRatedProductsReducer = (
+  initialState = { products: [], error: null },
+  action
+) => {
+  const { type, payload } = action;
+  switch (type) {
+    case TOP_RATED_PRODUCTS_REQUEST:
+      return { loading: true };
+
+    case TOP_RATED_PRODUCTS_SUCCESS:
+      return {
+        loading: false,
+        products: payload,
+      };
+
+    case TOP_RATED_PRODUCTS_FAIL:
+      return {
+        loading: false,
+        error: payload,
+      };
+
+    default:
+      return { ...initialState };
   }
 };
