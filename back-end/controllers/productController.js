@@ -3,10 +3,10 @@ import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
 
 // @desc    get all products
-// @route   GET /api/products?keyword=
+// @route   GET /api/products?keyword=&pageNumber=
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 2;
+  const pageSize = 3;
   const currentPage = Number(req.query.pageNumber) || 1;
   const keyword = req.query.keyword;
   const searchOptions = keyword.length
@@ -23,6 +23,14 @@ const getProducts = asyncHandler(async (req, res) => {
     currentPage,
     pages: Math.ceil(productsCount / pageSize),
   });
+});
+
+// @desc    get stop rated products
+// @route   GET /api/products/top
+// @access  Public
+const getTopRatedProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find().sort({ rating: -1 }).limit(4);
+  return res.json(products);
 });
 
 // @desc    get specific product by id
@@ -145,4 +153,5 @@ export {
   createProduct,
   updateProduct,
   createReview,
+  getTopRatedProducts,
 };
