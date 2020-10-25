@@ -15,14 +15,15 @@ const PaymentScreen = ({ history }) => {
     if (!cartState.shippingAddress) {
       history.push("/shipping");
     }
-  }, [history, cartState.shippingAddress]);
+
+    if (cartState.paymentMethod) {
+      history.push("/placeorder");
+    }
+  }, [history, cartState.shippingAddress, cartState.paymentMethod]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(addPaymentMethod(paymentMethod));
-    if (cartState.paymentMethod) {
-      history.push("/placeorder");
-    }
   };
   return (
     <FormContainer>

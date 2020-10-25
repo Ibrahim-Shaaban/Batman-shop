@@ -26,14 +26,14 @@ const ShippingAddressScreen = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(addShippingAddress(formData));
-    if (shippingAddress) {
-      history.push("payment");
-    }
   };
 
   useEffect(() => {
     if (shippingAddress) {
       const { address, city, postalCode, country } = shippingAddress;
+
+      history.push("payment");
+
       setFormData({
         address,
         city,
