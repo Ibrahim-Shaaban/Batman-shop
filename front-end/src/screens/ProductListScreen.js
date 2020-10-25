@@ -42,6 +42,7 @@ const ProductListScreen = ({ history, match }) => {
         dispatch(listProducts("", pageNumber || 1));
       }
     }
+    // eslint-disable-next-line
   }, [history, dispatch, userInfo, success, successCreate, pageNumber]);
 
   const deleteHandler = (productId) => {
