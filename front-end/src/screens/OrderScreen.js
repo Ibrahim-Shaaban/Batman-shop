@@ -64,7 +64,7 @@ const OrderScreen = ({ match, history }) => {
     if (!userInfo) {
       history.push("/login");
     }
-    if (!order || successPay || successDeliver) {
+    if (!order || successPay || successDeliver || order._id !== matchOrderId) {
       dispatch(resetPayment());
       dispatch(resetOrderDeliver());
       dispatch(getOrderById(matchOrderId));
