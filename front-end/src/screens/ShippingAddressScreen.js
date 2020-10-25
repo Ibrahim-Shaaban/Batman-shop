@@ -41,7 +41,7 @@ const ShippingAddressScreen = ({ history }) => {
         country,
       });
     }
-  }, [shippingAddress]);
+  }, [history, shippingAddress]);
 
   const { address, city, postalCode, country } = formData;
 
