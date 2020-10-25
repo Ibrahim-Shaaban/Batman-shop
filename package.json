@@ -2,7 +2,7 @@
   "name": "e-commerce-app",
   "version": "1.0.0",
   "description": "E-Commerce App Using MERN Stack",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
