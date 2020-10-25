@@ -10,7 +10,8 @@
     "client": "npm start --prefix front-end",
     "dev": "concurrently \"npm run server\" \"npm run client\"  ",
     "data:import": "node --experimental-modules back-end/seeder.js ",
-    "data:destroy": "node --experimental-modules back-end/seeder.js -d"
+    "data:destroy": "node --experimental-modules back-end/seeder.js -d" ,
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Ibrahim Shaaban",
   "license": "ISC",
