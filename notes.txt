@@ -1,3 +1,0 @@
-production test 
-1- clear order in orders screen
-2-user in orderlist admin screen
